@@ -2,7 +2,7 @@ from gpiozero import LED, Button
 from datetime import datetime, timedelta
 from signal import pause
 from time import sleep
-from requests import post
+from requests import get
 from json import dumps
 
 service_root = "http://cat.chriswait.net/"
@@ -13,15 +13,17 @@ led.off()
 
 def add_feed():
     url = service_root + "add_feed"
-    req = post(url)
-    print req.text
+    req = get(url)
 button.when_pressed = add_feed
 
 def check_should_feed():
     url = service_root
-    req = post(url)
-    return req.text
+    req = get(url)
+    return (req.text=="1")
 
 while True:
     sleep(10)
-    print check_should_feed()
+    if check_should_feed():
+        led.on()
+    else:
+        led.off()
