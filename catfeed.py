@@ -17,6 +17,8 @@ led = LED(led_pin)
 
 def add_feed():
     req = get(add_feed_url)
+    if (req.status_code == 200):
+        led.off()
 button.when_pressed = add_feed
 
 def check_should_feed():
